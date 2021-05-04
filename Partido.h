@@ -15,7 +15,7 @@ class Partido {
     string sigla;
     int numero;
     int votosLegenda;
-    list<Candidato*> candidatos;
+    list<Candidato> candidatos;
 
 public:
     Partido(string nome, string sigla, int numero, int votosLegenda);
@@ -33,9 +33,9 @@ public:
     void setVotosLegenda(const int &votosLegenda);
 
     //retorno lista candidatos
-    const list<Candidato*>& getCandidatos() const;
+    const list<Candidato> getCandidatos() const;
 
-    void adicionaCandidato(Candidato &cand);
+    void adicionaCandidato(Candidato cand);
 
     //void criaPartido(const string &nome);
 

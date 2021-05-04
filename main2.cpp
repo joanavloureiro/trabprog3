@@ -5,18 +5,61 @@
 #include "Partido.h"
 #include "Candidato.h"
 #include "Leitor.h"
+#include "Eleicao.h"
 
 using namespace std;
 
+// void adicionaPartido( list<Partido*> partidos, Partido p){
+//    partidos.push_back(p);
+// }
+
+
+
 int main () {
 
-    // string path = "./csv-exemplos/csv/ES/vitoria/candidatos.csv";
-    // ifstream file;
-    // file.open (path);
-    // if(!file.is_open()) cout<< "Could not open file";
+    string path = "./csv-exemplos/csv/ES/vitoria/candidatos.csv";
+    ifstream file;
+    file.open (path);
+    if(!file.is_open()) cout<< "Could not open file";
 
-    // while (file.good())  { 
-    //     getline (file, numero, ',' );
+    int numero;
+	int votosNominais;
+	string nome;
+	string nomeUrna;
+	Situacao situacao;
+	Sexo sexo;
+	//LocalDate 
+    string dataNascimento;
+	DestinoVoto destinoVoto;
+	int numeroPartido;
+	int idade;
+    string aux;
+
+    getline(file,aux);
+    while (! file.eof())  {
+        getline (file,aux, ',' );
+        numero = stoi(aux);
+
+        getline (file, aux, ',' );
+        votosNominais = stoi(aux);
+
+        getline (file, situacao, ',' );
+
+        getline (file, nome, ',' );
+
+        getline (file, nomeUrna, ',' );
+
+        //! Criar parse para sexo/situacao/destinoVoto
+        getline (file, sexo, ',' );
+
+        getline (file, dataNascimento, ',' );
+
+        getline (file, destinoVoto, ',' );
+
+        getline (file, aux, ',' );
+        numeroPartido = stoi(aux);
+    }
+    // &partido)ile, numero, ',' );
     //     getline (file, votosNominais, ',' );
     //     getline (file, situacao, ',' );
     //     getline (file, nome, ',' );
@@ -37,46 +80,41 @@ int main () {
     if(!file.is_open()) cout<< "Could not open file";
 
 	
-    list<Partido*> partidos;
     int numero;
     int votosLegenda;
     string nome ;
     string sigla;
-    string aux;
+    string aux2;
+    list<Partido> partidos;
+    Eleicao eleicao;
 
-    int i = 0;
-
-    getline(file,aux);
+    getline(file,aux2);
     while (! file.eof())  { 
-        getline (file,aux, ',' );
-        numero = stoi(aux);
-        //cout<<  aux ;
+        getline (file,aux2, ',' );
+        numero = stoi(aux2);
 
-        getline (file, aux, ',' );
-        votosLegenda = stoi(aux);
-        //cout<< ", " + aux ;
+        getline (file, aux2, ',' );
+        votosLegenda = stoi(aux2);
 
         getline (file, nome, ',' );
-        //cout<< ", " + nome ;
-
         getline (file, sigla );
-        //cout<< ", " +  sigla <<endl;
 
 
 
         Partido partido(nome,sigla,numero,votosLegenda);
-        partidos.push_back(&partido);
-
+    
+        //cout << "Estou inserindo o partido: "+ partido.getSigla() << endl;
+        
+        eleicao.adicionaPartido(partido);
+        //adicionaPartido(partido);
     }
 
     
-    // for(Partido* p : partidos)
-    //     cout << p->getNome() << endl;
-    list<Partido*>::iterator iter ;
-    for(iter = partidos.begin(); iter != partidos.end(); iter++){
-            Partido* p  = *iter;
-             cout << p->getNome() << endl;
-    }
+    //cout << partidos.size() << endl;
+
+    for(Partido p : eleicao.getPartidos())
+        cout << p.getNome() << endl;
+
 
     file.close(); 
 

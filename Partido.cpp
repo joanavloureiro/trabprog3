@@ -32,12 +32,12 @@ void Partido::setNumero(const int &numero){
     this->numero = numero;
 }
 
-const list<Candidato*>& Partido::getCandidatos() const {
+const list<Candidato> Partido::getCandidatos() const {
     return candidatos;
 }
 
-void Partido::adicionaCandidato(Candidato &cand){
-    candidatos.push_back(&cand);
+void Partido::adicionaCandidato(Candidato cand){
+    candidatos.push_back(cand);
 }
 
 // void Partido::criaPartido(const string &nome){
@@ -48,8 +48,8 @@ void Partido::adicionaCandidato(Candidato &cand){
 
 int Partido::getTotalVotosNominais() {
 	int total=0;
-	for(Candidato *c: this->candidatos){
-		total+=c->getVotosNominais();
+	for(Candidato c: candidatos){
+		total+=c.getVotosNominais();
     }
         
 		

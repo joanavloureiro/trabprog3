@@ -14,7 +14,8 @@ class Candidato {
 	string nomeUrna;
 	Situacao situacao;
 	Sexo sexo;
-	//LocalDate dataNascimento;
+	//LocalDate 
+    string dataNascimento;
 	DestinoVoto destinoVoto;
 	int numeroPartido;
 	int idade;
@@ -48,6 +49,9 @@ public:
 
     //? LocalDate getDataNascimento();
     //? void setDataNascimento(LocalDate dataNascimento);
+
+    string getDataNascimento() const;
+    void setDataNascimento(const string &dataNascimento);
 
     DestinoVoto getDestinoVoto();
     void setDestinoVoto(DestinoVoto destinoVoto);

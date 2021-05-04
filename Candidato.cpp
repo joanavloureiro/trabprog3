@@ -91,6 +91,13 @@ void Candidato::setSexo(Sexo sexo) {
 //? 	this->dataNascimento = dataNascimento;
 //? }
 
+string Candidato::getDataNascimento() const{
+    return dataNascimento;
+}
+
+void Candidato::setDataNascimento(const string &data){
+    this->dataNascimento = data;
+}
 
 DestinoVoto Candidato::getDestinoVoto() {
 	return destinoVoto;

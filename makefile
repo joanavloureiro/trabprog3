@@ -50,10 +50,10 @@ clean:
 
 gpp: 
 	clear
-	g++ -o teste Candidato.cpp	Partido.cpp Main.cpp
+	g++ -o teste Candidato.cpp Partido.cpp Eleicao.cpp Main.cpp
 	./teste
 gp: 
 	clear
-	g++ -o teste2 Candidato.cpp	Partido.cpp main2.cpp
+	g++ -o teste2 Candidato.cpp	Partido.cpp Eleicao.cpp main2.cpp
 	./teste2
 

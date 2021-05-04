@@ -3,6 +3,7 @@
 #include <string>
 #include "Partido.h"
 #include "Candidato.h"
+#include "Eleicao.h"
 //#include "Leitor.h"
 //#include "Enum.cpp"
 using namespace std;
@@ -17,13 +18,17 @@ int main () {
 
     Partido oi("OIE", "OI", 12, 123);
 
+    Eleicao eleicao;
+
+    eleicao.adicionaPartido(oi);
+
     oi.adicionaCandidato(joana);
     oi.adicionaCandidato(mirelly);
     oi.adicionaCandidato(jp);
 
     cout << oi.getNome();
-    for(Candidato* c : oi.getCandidatos()){
-        cout << c->getNome() << endl;
+    for(Candidato c : oi.getCandidatos()){
+        cout << c.getNome() << endl;
     }
 
 
