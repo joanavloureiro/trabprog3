@@ -17,6 +17,6 @@ class Leitor {
         const list<Partido*>& LePartidos() const;
         Situacao parseSituacao(string situacao);	
         DestinoVoto parseDestinoVoto(string destinoVoto);
-        Sexo parseSexo(char sexo) ;
+        Sexo parseSexo(string sexo) ;
 };
 #endif /* LEITOR_H */
