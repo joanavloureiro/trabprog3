@@ -1,5 +1,6 @@
 #include "Partido.h"
 #include <string>
+#include <vector>
 
  Partido::Partido(string nome, string sigla, int numero, int votosLegenda){
     this->nome = nome;
@@ -32,13 +33,23 @@ void Partido::setNumero(const int &numero){
     this->numero = numero;
 }
 
-const list<Candidato> Partido::getCandidatos() const {
+int Partido::getVotosLegenda() const{
+    return votosLegenda;
+}
+
+void Partido::setVotosLegenda(const int &votosLegenda){
+    this->votosLegenda = votosLegenda;
+}
+
+const vector<Candidato> Partido::getCandidatos() const {
     return candidatos;
 }
 
 void Partido::adicionaCandidato(Candidato cand){
+    //cout << sigla << " -- ";
     candidatos.push_back(cand);
-}
+    //cout << cand.getNome() << endl;
+}  
 
 // void Partido::criaPartido(const string &nome){
 //     Partido *d = new Partido();
@@ -46,7 +57,7 @@ void Partido::adicionaCandidato(Candidato cand){
 //     partidos.push_back(d);
 // }
 
-int Partido::getTotalVotosNominais() {
+int Partido::getTotalVotosNominais() const{
 	int total=0;
 	for(Candidato c: candidatos){
 		total+=c.getVotosNominais();
@@ -56,12 +67,12 @@ int Partido::getTotalVotosNominais() {
 	return total;
 	}
 	
-// int getTotalEleitos() {
-// 	int total=0;
-// 	for(Candidato c: this.candidatos)
-// 		if(c.getSituacao() == ELEITO)
-// 			total++;
+int Partido::getTotalEleitos() const {
+	int total=0;
+	for(Candidato c: candidatos)
+		if(c.getSituacao() == ELEITO)
+			total++;
 		
-// 	return total;
-// }
+	return total;
+}
 

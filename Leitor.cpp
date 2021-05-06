@@ -1,87 +1,161 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 #include "Leitor.h"
 #include "Partido.h"
 #include "Candidato.h"
-#include "Eleicao.h"
+#include "Enum.cpp"
 
-Leitor ::Leitor (){
-    
+Leitor ::Leitor (){}
+
+const vector<Candidato> Leitor::LeCandidatos(ifstream& file, string strData) const {
+    Leitor leitor;
+
+    struct tm data = leitor.stringToTm(strData);
+
+    struct tm dataNascimento;
+    int numero,
+        votosNominais,
+        numeroPartido,
+        idade;
+	string nome,
+        nomeUrna,
+        aux;
+
+	Situacao situacao;
+	Sexo sexo;
+	DestinoVoto destinoVoto;
+
+    list<Candidato> candidatos;
+
+    getline(file,aux);
+    while (! file.eof())  {
+        getline (file,aux, ',' );
+        if(aux.empty()) break;
+        numero = stoi(aux);
+
+        getline (file, aux, ',' );
+        votosNominais = stoi(aux);
+
+        getline (file, aux, ',' );
+        situacao = leitor.parseSituacao(aux);
+
+        getline (file, nome, ',' );
+
+        getline (file, nomeUrna, ',' );
+
+        getline (file, aux, ',' );
+        sexo = leitor.parseSexo(aux);
+
+        getline (file, aux, ',' );
+        dataNascimento = leitor.stringToTm(aux);
+        idade = leitor.calculaIdade(&data, &dataNascimento);
+
+        getline (file, aux, ',' );
+        destinoVoto = leitor.parseDestinoVoto(aux);
+
+        getline (file, aux );
+        numeroPartido = stoi(aux);
+
+        if( destinoVoto == VALIDO) {
+            Candidato candidato(numero, votosNominais, nome, nomeUrna, situacao,
+                                sexo, dataNascimento, destinoVoto,numeroPartido,  idade);
+            candidatos.push_back(candidato);
+        }
+
+    }
+
+    vector<Candidato> cand2(candidatos.begin(),candidatos.end());
+
+    return cand2;
+
 }
 
-const list<Candidato*>& Leitor::LeCandidatos() const {
+const vector<Partido> Leitor::LePartidos(ifstream& file) const {
+    int numero,
+        votosLegenda;
 
-    list<Candidato*> candidatos;
-    return candidatos;
+    string nome,
+        sigla,
+        line,
+        aux;
+     
 
-}
-
-const list<Partido*>& Leitor::LePartidos(ifstream file) const {
-    //string path = "./csv-exemplos/csv/ES/vitoria/partidos.csv";
-    //ifstream file;
-    //file.open (path);
-    //if(!file.is_open()){ 
-    //    cout<< "Could not open file" << endl;
-     //   trhow ;
-    //}
-
-	
-    int numero;
-    int votosLegenda;
-    string nome ;
-    string sigla;
-    string aux2;
     list<Partido> partidos;
-    Eleicao eleicao;
-    string line;
 
-    getline(file,aux2);
-    
+    getline(file,aux);
     while (! file.eof())  { 
-        getline (file,aux2, ',' );
-        //cout <<"numero: " + aux2 ;
-        numero = stoi(aux2);
+        getline (file,aux, ',' );
+        if(aux.empty()) break;
+        numero = stoi(aux);
 
-        getline (file, aux2, ',' );
-        //cout << "vl: " + aux2 << endl;
-        votosLegenda = stoi(aux2);
+        getline (file, aux, ',' );
+        votosLegenda = stoi(aux);
 
         getline (file, nome, ',' );
         getline (file, sigla );
 
-        Partido partido(nome,sigla,numero,votosLegenda);
-    
-        //cout << "Estou inserindo o partido: "+ partido.getSigla() << endl;
-        
-        eleicao.adicionaPartido(partido);
-        //adicionaPartido(partido);
+        Partido partido(nome,sigla,numero,votosLegenda);       
+        partidos.push_back(partido);
     }
 
-    
-    //cout << partidos.size() << endl;
+    vector<Partido> part2(partidos.begin(),partidos.end());
 
-    for(Partido p : eleicao.getPartidos())
-        cout << p.getNome() << endl;
-
-    file.close(); 
+    return part2;
 
 }
 
+struct tm Leitor::stringToTm(string dataStr) {
 
- Situacao Leitor ::parseSituacao(string situacao) {
+    int year, month, day;
+    sscanf(dataStr.c_str(), "%d/%d/%d",  &day, &month, &year);
+
+    struct tm  tm;
+    time_t rawtime;
+    time ( &rawtime );
+
+    tm = *localtime ( &rawtime );
+    tm.tm_year = year - 1900;
+    tm.tm_mon = month - 1;
+    tm.tm_mday = day;
+
+
+    mktime(&tm);
+
+    return tm;
+
+}
+
+int  Leitor:: calculaIdade(struct tm *data, struct tm *dataNascimento) {
+    int idade = data->tm_year - dataNascimento->tm_year;
+
+    /*
+     * Verifica as condições para determinar se já fez aniversário.
+     * Caso não tenha feito ainda, decrementamos a idade para compensar.
+     */
+    if (data->tm_mon < dataNascimento->tm_mon)
+        idade -= 1;
+    else if (data->tm_mon == dataNascimento->tm_mon)
+        if (data->tm_mday < dataNascimento->tm_mday)
+            idade -= 1;
+
+    return idade;
+} 
+
+Situacao Leitor ::parseSituacao(string situacao) {
 	if(!situacao.compare("Eleito"))return ELEITO;
 	if(!situacao.compare("Não Eleito"))return NAO_ELEITO;
 	return SUPLENTE ;
 }
 
-
- DestinoVoto Leitor ::parseDestinoVoto(string destinoVoto) {
-	if(!destinoVoto.compare("Válido"))return VALIDO;
-	if(!destinoVoto.compare("Anulado"))return ANULADO;
-	return ANULADO_SUB_JUD ;
+DestinoVoto Leitor ::parseDestinoVoto(string destinoVoto) {
+if(!destinoVoto.compare("Válido"))return VALIDO;
+if(!destinoVoto.compare("Anulado"))return ANULADO;
+return ANULADO_SUB_JUD ;
 }	
- Sexo Leitor ::parseSexo(string sexo) {
+
+Sexo Leitor ::parseSexo(string sexo) {
 	if(!sexo.compare("F"))return FEMININO;
 	return MASCULINO;
 }

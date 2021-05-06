@@ -50,10 +50,12 @@ clean:
 
 gpp: 
 	clear
-	g++ -o teste Leitor.cpp Candidato.cpp Partido.cpp Eleicao.cpp Main.cpp
-	./teste
+	g++ -o teste  Candidato.cpp Partido.cpp Leitor.cpp  Relatorio.cpp Ordenacao.cpp Main.cpp
+	./teste > saida.txt
+
 gp: 
 	clear
-	g++ -o teste2 Leitor.cpp Candidato.cpp	Partido.cpp Eleicao.cpp main2.cpp
+	g++ -o  teste2 Main2.cpp
 	./teste2
+
 

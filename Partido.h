@@ -5,6 +5,7 @@
 #include <string>
 #include <list>
 #include <iostream>
+#include <vector>
 
 #include "Candidato.h"
 
@@ -15,7 +16,7 @@ class Partido {
     string sigla;
     int numero;
     int votosLegenda;
-    list<Candidato> candidatos;
+    vector<Candidato> candidatos;
 
 public:
     Partido(string nome, string sigla, int numero, int votosLegenda);
@@ -33,13 +34,13 @@ public:
     void setVotosLegenda(const int &votosLegenda);
 
     //retorno lista candidatos
-    const list<Candidato> getCandidatos() const;
+    const vector<Candidato> getCandidatos() const;
 
     void adicionaCandidato(Candidato cand);
 
     //void criaPartido(const string &nome);
 
-    int getTotalVotosNominais();
+    int getTotalVotosNominais() const;
     
     int getTotalEleitos() const;
 };
